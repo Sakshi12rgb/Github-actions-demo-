@@ -1,43 +1,30 @@
-
-  ```yaml
-name: Add CICD workflow for code, build, test, and deploy
+name: CICD 
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   code:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Display code checkout success
-        run: echo "Code checkout successful"
-
+      - name: Clone the Code
+        run: echo "Cloning the Code"
   build:
+    needs: [code]
     runs-on: ubuntu-latest
-    needs: code
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Build
-        run: echo "Build successful"
-
+      - name: Build using Docker
+        run: echo "Building using Docker"
   test:
+    needs: [build]
     runs-on: ubuntu-latest
-    needs: build
     steps:
-      - name: Test
-        run: echo "Tests passed"
-
+      - name: Running test cases
+        run: echo "Testing the app"
+  
   deploy:
+    needs: [build,test]
     runs-on: ubuntu-latest
-    needs: test
     steps:
-      - name: Deploy
-        run: echo "Deployment successful"
-```
+      - name: Deploying on the machine
+        run: echo "Deploying the code"
